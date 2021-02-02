@@ -5,32 +5,35 @@
 </ion-header>
 
 <ion-content>
+    <form #fc="ngForm" (ngSubmit)="Salvar(fc)">
+        <ion-item>
+            <ion-label position="floating">Nome</ion-label>
+            <ion-input type="text" [(ngModel)]='user.nome' name='name' required></ion-input>
+        </ion-item>
 
-    <ion-item>
-        <ion-label position="floating">Nome</ion-label>
-        <ion-input type="text" [(ngModel)]='user.nome' name='name'></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input type="email" [(ngModel)]='user.email' name='email' required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"></ion-input>
+        </ion-item>
 
-    <ion-item>
-        <ion-label position="floating">E-mail</ion-label>
-        <ion-input type="email" [(ngModel)]='user.email' name='email'></ion-input>
-    </ion-item>
-
-    <ion-item>
-        <ion-label position="floating">Senha</ion-label>
-        <ion-input type="password" [(ngModel)]='user.senha' name='senha'></ion-input>
-    </ion-item>
-
-
-    <ion-item>
-        <ion-label position="floating">ConfirmaSenha</ion-label>
-        <ion-input type="password" name='confsenha'></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label position="floating">Senha</ion-label>
+            <ion-input type="password" [(ngModel)]='user.senha' name='senha' required #s="ngModel" minlength="6"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="(s.invalid && s.dirty)">Senha muito curta!</ion-text>
 
 
-    <ion-item>
-        <ion-button expand="block" (click)="Salvar()">Salvar</ion-button>
-        <ion-button expand="block" color="danger">Cancelar</ion-button>
-    </ion-item>
-    {{user.nome}} - {{user.email}} - {{user.senha}}
+        <ion-item>
+            <ion-label position="floating">ConfirmaSenha</ion-label>
+            <ion-input type="password" name='confsenha' required (ngModel)="conf" #c="ngModel"></ion-input>
+        </ion-item>
+
+        <ion-text color="danger" *ngIf="(s.Value != c.Value) && c.dirty">Senhas diferentes!</ion-text>
+
+        <ion-item>
+            <ion-button expand="block" type="submit" [disabled]="fc.invalid || (s.value != c.value)">Salvar</ion-button>
+            <ion-button expand="block" color="danger">Cancelar</ion-button>
+        </ion-item>
+        {{user.nome}} - {{user.email}} - {{user.senha}}
+    </form>
 </ion-content>
